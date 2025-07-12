@@ -1,0 +1,13 @@
+name: Deploy Docker Image
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build and Push
+        run: |
+          docker build -t xfce-rdp .
+          docker tag xfce-rdp yourdockerhub/xfce-rdp:latest
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u yourdockerhub --password-stdin
+          docker push yourdockerhub/xfce-rdp:latest
